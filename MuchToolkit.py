@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-MuchToolkit 0.1
+MuchToolkit 0.2
 Dogecoin Toolkit
 Dylan Hamer 2017
 """
@@ -40,11 +40,19 @@ address <address> | Explore an address
 usdprice          | Get price in USD
 btcprice          | Get price in BTC
 rank              | Get rank
-supply            | Get total supply\n"""
+supply            | Get total supply
+refresh           | Refresh Coinmarketcap data\n"""
 
-def coinMarketCap(data):
-    coinmarketcap = Market()
-    return coinmarketcap.ticker("Dogecoin", limit=3, convert="USD")[0][data]
+class coinMarketCap:
+    def __init__(self):
+        click.secho("[*] Getting Coinmarketcap data... ", nl=False)
+        coinmarketcap = Market()
+        dogecoin = coinmarketcap.ticker("Dogecoin", limit=3, convert="USD")[0]
+        self.usdprice = dogecoin["price_usd"]
+        self.btcprice = dogecoin["price_btc"]
+        self.rank = dogecoin["rank"]
+        self.supply = dogecoin["total_supply"]
+        click.secho("Done", fg="green")
 
 def generateQR():
     click.secho("[Much Error!] ", fg="red", nl=False)
@@ -53,14 +61,14 @@ def generateQR():
 def greeting():
     click.clear()    
     click.secho(doge, fg="yellow")
-    click.echo("MuchToolkit0.1 by Dylan Hamer\n")
+    click.echo("MuchToolkit 0.2 by Dylan Hamer\n")
     click.secho("Donations Welcome:  ", nl=False)
     click.secho("DFUjFKtfRKCJGoo62jzzS6tUZnyTqxMHEV", fg="green")
     click.secho("Socks for the homeless: ", nl=False)
     click.secho("9vnaTWu71XWimFCW3hctSxryQgYg7rRZ7y", fg="blue")
     click.echo()
 
-def menu():
+def menu(coinmarketcap):
     click.echo("Type a command or \'help\' for more information")
     while True:
         click.secho("[>] ", fg="yellow", nl=False) 
@@ -86,19 +94,25 @@ def menu():
                 address = actualCommand[1]
             click.launch("http://www.dogechain.info/address/"+address)
         elif command == "usdprice":
-            print("Price in USD is: $"+coinMarketCap("price_usd"))
+            click.echo("Price in USD is: "+click.style("$"+coinmarketcap.usdprice,fg="green"))
         elif command == "btcprice":
-            print("Price in BTC is: "+coinMarketCap("price_btc"))
+            click.echo("Price in BTC is: "+click.style("BTC "+coinmarketcap.btcprice, fg="green"))
         elif command == "rank":
-            print("Cryptocurrency rank is: #"+coinMarketCap("rank")+" according to Coinmarketcap")
+            click.echo("Cryptocurrency rank is: "+click.style("#"+coinmarketcap.rank, fg="green")+" according to Coinmarketcap")
+        elif command == "supply":
+            click.echo("Coins in circulation: "+click.style("Ð"+coinmarketcap.supply, fg="green"))
+        elif command == "refresh":
+            coinmarketcap = coinMarketCap()
         elif command == "":
             pass    
         else:
             click.secho("[Much Error!] Command not found!", fg="red")
 
+
 def main():
+    coinmarketcap = coinMarketCap()
     greeting()
-    menu()
+    menu(coinmarketcap)
 
 if __name__ == "__main__": 
     main()
