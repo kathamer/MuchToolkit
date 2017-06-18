@@ -2,14 +2,15 @@
 # -*- coding: utf-8 -*-
 
 """
-MuchToolkit 0.2
+MuchToolkit 0.3
 Dogecoin Toolkit
 Dylan Hamer 2017
+Felix Zactor 2017
 """
 
 import click                      # Make beautiful interfaces
 from coinmarketcap import Market  # Get market info
-
+import os                         # Give commands to the system
 doge="""░░░░░░░░░▄░░░░░░░░░░░░░░▄░░░░ 
 ░░░░░░░░▌▒█░░░░░░░░░░░▄▀▒▌░░░
 ░░░░░░░░▌▒▒█░░░░░░░░▄▀▒▒▒▐░░░ 
@@ -41,7 +42,10 @@ usdprice          | Get price in USD
 btcprice          | Get price in BTC
 rank              | Get rank
 supply            | Get total supply
-refresh           | Refresh Coinmarketcap data\n"""
+refresh           | Refresh Coinmarketcap data
+exit              | Exits MuchToolkit
+tousd             | Converts Dogecoin to USD
+tobtc             | Converts Dogecoin to BTC\n"""
 
 class coinMarketCap:
     def __init__(self):
@@ -61,7 +65,7 @@ def generateQR():
 def greeting():
     click.clear()    
     click.secho(doge, fg="yellow")
-    click.echo("MuchToolkit 0.2 by Dylan Hamer\n")
+    click.echo("MuchToolkit 0.3 by Dylan Hamer and Felix Zactor\n")
     click.secho("Donations Welcome:  ", nl=False)
     click.secho("DFUjFKtfRKCJGoo62jzzS6tUZnyTqxMHEV", fg="green")
     click.secho("Socks for the homeless: ", nl=False)
@@ -88,7 +92,7 @@ def menu(coinmarketcap):
             click.launch("http://www.dogechain.info")
         elif "address" in command:
             actualCommand = actualCommand.split(" ")
-            if len(actualCommand) == 1:
+            if len(actualCommand) != 34 or actualCommand[0] != "A" or "9" or "D":
                 address = input("Please enter a valid Dogecoin address: ")
             else:
                 address = actualCommand[1]
@@ -103,6 +107,17 @@ def menu(coinmarketcap):
             click.echo("Coins in circulation: "+click.style("Ð"+coinmarketcap.supply, fg="green"))
         elif command == "refresh":
             coinmarketcap = coinMarketCap()
+        elif command == "exit":
+            os.system("cls" if os.name == 'nt' else "clear")
+            exit()
+        elif command[0:6] == "tousd ":
+            doge = int(command[7:len(command) - 1])
+            amount = doge * coinmarketcap.usdprice
+            click.echo("$" + amount, fg="green")
+        elif command[0:6] == "tobtc ":
+            doge = int(command[7:len(command) - 1])
+            amount = doge * coinmarketcap.btcprice
+            click.echo("BTC " + amount)
         elif command == "":
             pass    
         else:
