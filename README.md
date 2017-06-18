@@ -3,13 +3,13 @@ Much toolkit. Such useful. Wow.
 
 MuchToolkit is an application full of useful utilities for working with Dogecoin.
 
-## Requirements
+### Requirements
 - Linux - MuchToolkit only works with Linux at the moment
 - Pip - Python package manager
 - Python3.4 or greater
 - Click - Can be installed with Pip
 
-## Installing
+### Installing
 [!!] MuchToolkit only works with Linux! (For now)
 
 First, you need to install Click and Coinmarketcap.
