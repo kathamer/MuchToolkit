@@ -7,7 +7,6 @@ Dogecoin Toolkit
 Dylan Hamer 2017
 """
 
-import sys
 import click                      # Make beautiful interfaces
 from coinmarketcap import Market  # Get market info
 
@@ -43,8 +42,7 @@ usdprice          | Get price in USD
 btcprice          | Get price in BTC
 rank              | Get rank
 supply            | Get total supply
-refresh           | Refresh Coinmarketcap data
-exit              | Exit MuchToolkit\n"""
+refresh           | Refresh Coinmarketcap data\n"""
 
 class coinMarketCap:
     def __init__(self):
@@ -108,8 +106,6 @@ def menu(coinmarketcap):
             click.echo("Coins in circulation: "+click.style("Ð"+coinmarketcap.supply, fg="green"))
         elif command == "refresh":
             coinmarketcap = coinMarketCap()
-        elif command == "exit":
-            sys.exit()
         elif command == "":
             pass
         else:
