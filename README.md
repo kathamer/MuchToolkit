@@ -23,11 +23,19 @@ Then just type `./MuchToolkit.py` to run MuchToolkit
 
 ### List of commands
 help              | Show this message
+
 version           | Get current version
+
 genqr             | Generate a QR code
+
 blockchain        | Open dogechain.info
+
 address <address> | Explore an address
+
 usdprice          | Get price in USD
+
 btcprice          | Get price in BTC
+
 rank              | Get rank
+
 supply            | Get total supply
