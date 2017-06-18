@@ -39,6 +39,10 @@ genQR             | Generate a QR code
 blockchain        | Open dogechain.info
 address <address> | Explore an address\n"""
 
+def generateQR():
+    click.secho("[Much Error!] ", fg="red", nl=False)
+    click.echo("I haven't finished this yet ¯\_(ツ)_/¯")
+    
 def greeting():
     click.clear()    
     click.secho(doge, fg="yellow")
