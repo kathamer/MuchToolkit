@@ -7,7 +7,8 @@ Dogecoin Toolkit
 Dylan Hamer 2017
 """
 
-import click  # Make beautiful interfaces
+import click                      # Make beautiful interfaces
+from coinmarketcap import Market  # Get market info
 
 doge="""░░░░░░░░░▄░░░░░░░░░░░░░░▄░░░░ 
 ░░░░░░░░▌▒█░░░░░░░░░░░▄▀▒▌░░░
@@ -29,15 +30,21 @@ doge="""░░░░░░░░░▄░░░░░░░░░░░░░░
 ░░░░░░▀▄▄▄▄▄▄▀▀▀▒▒▒▒▒▄▄▀░░░░░
 ░░░░░░░░░▒▒▒▒▒▒▒▒▒▒▀▀░░░░░░░░"""
 
-help="""\nMuch Help
---------------------------
-List of commands:
+help="""\nList of commands:
 _______________________________________
 help              | Show this message
 version           | Get current version
-genQR             | Generate a QR code
+genqr             | Generate a QR code
 blockchain        | Open dogechain.info
-address <address> | Explore an address\n"""
+address <address> | Explore an address
+usdprice          | Get price in USD
+btcprice          | Get price in BTC
+rank              | Get rank
+supply            | Get total supply\n"""
+
+def coinMarketCap(data):
+    coinmarketcap = Market()
+    return coinmarketcap.ticker("Dogecoin", limit=3, convert="USD")[0][data]
 
 def generateQR():
     click.secho("[Much Error!] ", fg="red", nl=False)
@@ -78,6 +85,12 @@ def menu():
             else:
                 address = actualCommand[1]
             click.launch("http://www.dogechain.info/address/"+address)
+        elif command == "usdprice":
+            print("Price in USD is: $"+coinMarketCap("price_usd"))
+        elif command == "btcprice":
+            print("Price in BTC is: "+coinMarketCap("price_btc"))
+        elif command == "rank":
+            print("Cryptocurrency rank is: #"+coinMarketCap("rank")+" according to Coinmarketcap")
         elif command == "":
             pass    
         else:
