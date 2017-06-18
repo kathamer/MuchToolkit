@@ -30,7 +30,7 @@ genqr             | Generate a QR code
 
 blockchain        | Open dogechain.info
 
-address           | Explore an address
+address [address] | Explore an address
 
 usdprice          | Get price in USD
 
@@ -39,3 +39,9 @@ btcprice          | Get price in BTC
 rank              | Get rank
 
 supply            | Get total supply
+
+exit              | Exit MuchToolkit
+
+tousd [doge]      | Tells how much x doge is in USD
+
+tobtc [doge]      | Tells how much x doge is in BTC
