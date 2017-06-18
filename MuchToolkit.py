@@ -42,10 +42,10 @@ usdprice          | Get price in USD
 btcprice          | Get price in BTC
 rank              | Get rank
 supply            | Get total supply
-refresh           | Refresh Coinmarketcap data\n
-exit              | Exits MuchToolkit\n
+refresh           | Refresh Coinmarketcap data
+exit              | Exits MuchToolkit
 tousd             | Converts Dogecoin to USD
-tobtc             | Converts Dogecoin to BTC"""
+tobtc             | Converts Dogecoin to BTC\n"""
 
 class coinMarketCap:
     def __init__(self):
