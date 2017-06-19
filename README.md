@@ -22,20 +22,16 @@ Then type `git clone https://github.com/DylanHamer/MuchToolkit`
 Then just type `./MuchToolkit.py` to run MuchToolkit
 
 ### List of commands
+licenses          | Show open source licenses
 help              | Show this message
-
 version           | Get current version
-
+exit              | Exit the application
 genqr             | Generate a QR code
-
 blockchain        | Open dogechain.info
-
-address           | Explore an address
-
+address <address> | Explore an address
 usdprice          | Get price in USD
-
 btcprice          | Get price in BTC
-
 rank              | Get rank
-
 supply            | Get total supply
+refresh           | Refresh Coinmarketcap data
+
