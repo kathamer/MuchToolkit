@@ -34,7 +34,7 @@ genqr             | Generate a QR code
 
 blockchain        | Open dogechain.info
 
-address <address> | Explore an address
+address           | Explore an address
 
 usdprice          | Get price in USD
 
