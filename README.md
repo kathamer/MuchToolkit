@@ -12,7 +12,7 @@ MuchToolkit is an application full of useful utilities for working with Dogecoin
 ### Installing
 [!!] MuchToolkit only works with Linux! (For now)
 
-First, you need to install Click and Coinmarketcap.
+First, you need to install Click, Coinmarketcap, and Pyqrcode.
 Type `pip3 install click`
 
 Once that has finished, type `pip3 install coinmarketcap`
