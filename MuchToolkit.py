@@ -54,7 +54,7 @@ You may obtain a copy of the License at
    limitations under the License.
 
 QRCode:
-CCopyright (c) 2013, Michael Nooner
+Copyright (c) 2013, Michael Nooner
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
