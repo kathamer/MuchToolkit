@@ -2,15 +2,18 @@
 # -*- coding: utf-8 -*-
 
 """
-MuchToolkit 0.3 Beta
+MuchToolkit 0.4 Beta
 Dogecoin Toolkit
 Dylan Hamer 2017
+Felix Zactor 2017
 """
 
 import click                      # Make beautiful interfaces
-import muchascii		  # ASCII art
+import muchascii                  # ASCII art
 import random                     # Random choices
 from coinmarketcap import Market  # Get market info
+import pyqrcode                   # Make QR Codes
+import os                         # Checks to see if files exists
 
 """Choose an ASCII art graphic and a color"""
 graphic  = muchascii.get(random.choice(["moon", "rocket", "doge"]))
@@ -30,7 +33,8 @@ usdprice          | Get price in USD
 btcprice          | Get price in BTC
 rank              | Get rank
 supply            | Get total supply
-refresh           | Refresh Coinmarketcap data\n"""
+refresh           | Refresh Coinmarketcap data
+reddit            | Open the offical Dogecoin reddit\n"""
 
 """Open source licenses"""
 licenses="""\nOpen source licenses:
@@ -42,7 +46,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-   http://www.apache.org/licenses/LICENSE-2.0
+   https://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -91,47 +95,59 @@ class coinMarketCap:
         click.secho("Done", fg="green")
 
 """QR code generator: will implement this in the next version"""
-def generateQR():
-    click.secho("[Much Error!] ", fg="red", nl=False)
-    click.echo("I haven't finished this yet ¯\_(ツ)_/¯")
+def generateQR(data):
+    qrcode = pyqrcode.create(data)
+    if os.path.isfile("QRcode.svg") == True:
+        click.secho("[Much Error!]", nl=False, fg="red", blink=True)
+        click.secho("Please move the existing QR code!", bold=True)
+    else:
+        qrcode.svg("QRCode.svg", scale=8)
+        click.secho("QRCode created as ", nl=False)
+        click.secho("QRCode.svg", blink=True)
 
 """ASCII art and text on startup"""
 def greeting():
-    click.clear()    
-    click.secho(graphic, fg=color)
-    click.echo("MuchToolkit 0.3 Beta by Dylan Hamer\n")
-    click.secho("Donations Welcome:  ", nl=False)
+    click.clear()
+    click.secho(graphic, fg=color, bold=True)
+    click.echo("MuchToolkit 0.4 Beta by Dylan Hamer and Felix Zactor\n")
+    click.secho("Donations Welcome: ")
+    click.secho("Dylan Hamer:  ", nl=False)
     click.secho("DFUjFKtfRKCJGoo62jzzS6tUZnyTqxMHEV", fg="green")
+    click.secho("Felix Zactor: ", nl=False)
+    click.secho("DJZjvKAjT838eLo4jTtuCLWm63yLx2Z3x2", fg="green")
     click.secho("Socks for the homeless: ", nl=False)
     click.secho("9vnaTWu71XWimFCW3hctSxryQgYg7rRZ7y", fg="blue")
+    click.secho("Dogecoin Reddit:")
+    click.secho("https://reddit.com/r/dogecoin", fg="yellow")
     click.echo()
 
 """Command menu"""
 def menu(coinmarketcap):
     click.echo("Type a command or \'help\' for more information")
     while True:
-        click.secho(">>> ", fg=color, nl=False) 
+        click.secho(">>> ", fg=color, nl=False, blink=True) 
         command=input()
         actualCommand = command
         command = command.lower()
         if command == "help":
             click.echo(help)
         elif command == "version":
-            click.secho("MuchToolkit 0.1", fg="green")
+            click.secho("MuchToolkit 0.4", fg="green")
         elif command == "clear":
             click.clear()
             greeting()
-        elif command == "genqr":
-            generateQR()
+        elif command[0:5] == "genqr":
+            data = command[6:len(command)]
+            generateQR(data)
         elif command == "blockchain":
-            click.launch("http://www.dogechain.info")
+            click.launch("https://www.dogechain.info")
         elif "address" in command:
             actualCommand = actualCommand.split(" ")
             if len(actualCommand) == 1:
                 address = input("Please enter a valid Dogecoin address: ")
             else:
                 address = actualCommand[1]
-            click.launch("http://www.dogechain.info/address/"+address)
+            click.launch("https://www.dogechain.info/address/"+address)
         elif command == "usdprice":
             click.echo("Price in USD is: "+click.style("$"+coinmarketcap.usdprice,fg="green"))
         elif command == "btcprice":
@@ -144,13 +160,16 @@ def menu(coinmarketcap):
             coinmarketcap = coinMarketCap()
         elif command == "licenses":
             click.echo(licenses)
+        elif command == "reddit":
+            click.launch("https://www.reddit.com/r/dogecoin")
         elif command == "exit":
+            click.clear()
             click.secho("Very exit!", fg="green")
             exit(0)
         elif command == "":
             pass    
         else:
-            click.secho("[Much Error!] Command not found!", fg="red")
+            click.secho("[Much Error!] Command not found!", fg="red", blink=True)
 
 
 def main():  
