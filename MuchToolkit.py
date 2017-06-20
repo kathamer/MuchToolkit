@@ -13,7 +13,6 @@ import muchascii                  # ASCII art
 import random                     # Random choices
 from coinmarketcap import Market  # Get market info
 import pyqrcode                   # Make QR Codes
-import os                         # Checks to see if files exists
 
 """Choose an ASCII art graphic and a color"""
 graphic  = muchascii.get(random.choice(["moon", "rocket", "doge"]))
@@ -96,11 +95,7 @@ class coinMarketCap:
 
 """QR code generator: will implement this in the next version"""
 def generateQR(data):
-    qrcode = pyqrcode.create(data)
-    if os.path.isfile("QRcode.svg") == True:
-        click.secho("[Much Error!]", nl=False, fg="red", blink=True)
-        click.secho("Please move the existing QR code!", bold=True)
-    else:
+        qrcode = pyqrcode.create(data)
         qrcode.svg("QRCode.svg", scale=8)
         click.secho("QRCode created as ", nl=False)
         click.secho("QRCode.svg", blink=True)
