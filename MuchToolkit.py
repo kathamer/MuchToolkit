@@ -10,8 +10,7 @@ Felix Zactor 2017
 
 addresses = [0] #Replace the zero and put the addresses in quotes. Make it look like this:
 # addresses = ["DFUjFKtfRKCJGoo62jzzS6tUZnyTqxMHEV", "DJZjvKAjT838eLo4jTtuCLWm63yLx2Z3x2", "9vnaTWu71XWimFCW3hctSxryQgYg7rRZ7y"]
-valid = True
-
+valid = False
 
 import click                      # Make beautiful interfaces
 import muchascii                  # ASCII art
@@ -32,6 +31,7 @@ def doge():
         return sum(balance)/100000000
 if addresses[0] != 0:
     balance = doge()
+    valid = True
 
 """Choose an ASCII art graphic and a color"""
 graphic  = muchascii.get(random.choice(["moon", "rocket", "doge"]))
