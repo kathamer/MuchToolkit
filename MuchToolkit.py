@@ -2,15 +2,36 @@
 # -*- coding: utf-8 -*-
 
 """
-MuchToolkit 0.3 Beta
-Dogecoin Toolkit
+MuchToolkit 0.4 Beta
+Ðogecoin Toolkit
 Dylan Hamer 2017
+Felix Zactor 2017
 """
 
+addresses = [0] #Replace the zero and put the addresses in quotes. Make it look like this:
+# addresses = ["DFUjFKtfRKCJGoo62jzzS6tUZnyTqxMHEV", "DJZjvKAjT838eLo4jTtuCLWm63yLx2Z3x2", "9vnaTWu71XWimFCW3hctSxryQgYg7rRZ7y"]
+valid = False
+
 import click                      # Make beautiful interfaces
-import muchascii		  # ASCII art
+import muchascii                  # ASCII art
 import random                     # Random choices
 from coinmarketcap import Market  # Get market info
+import pyqrcode                   # Make QR Codes
+import requests                   # For the address script
+import json                       # For the address script
+
+# I would like to thank peoplma for this function
+def doge():
+    balance = []
+    for i in addresses:
+        get_address_info = requests.get('https://api.blockcypher.com/v1/doge/main/addrs/'+i+'/full?limit=99999')
+        address_info = get_address_info.text
+        j_address_info = json.loads(address_info)
+        balance.append(j_address_info['balance'])
+        return sum(balance)/100000000
+if addresses[0] != 0:
+    balance = doge()
+    valid = True
 
 """Choose an ASCII art graphic and a color"""
 graphic  = muchascii.get(random.choice(["moon", "rocket", "doge"]))
@@ -30,7 +51,10 @@ usdprice          | Get price in USD
 btcprice          | Get price in BTC
 rank              | Get rank
 supply            | Get total supply
-refresh           | Refresh Coinmarketcap data\n"""
+refresh           | Refresh Coinmarketcap data
+reddit            | Open the offical Ðogecoin reddit
+value [btc or usd]| Gives you the value of your doges in the currency on your choice
+balance           | Shows the overall balance of all the addresses added\n"""
 
 """Open source licenses"""
 licenses="""\nOpen source licenses:
@@ -42,7 +66,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-   http://www.apache.org/licenses/LICENSE-2.0
+   https://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -51,29 +75,28 @@ You may obtain a copy of the License at
    limitations under the License.
 
 QRCode:
-Copyright (c) 2011, Lincoln Loop
+Copyright (c) 2013, Michael Nooner
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the copyright holder nor the names of its 
+      contributors may be used to endorse or promote products derived from
+      this software without specific prior written permission
 
-    * Redistributions of source code must retain the above copyright notice,
-      this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright notice,
-      this list of conditions and the following disclaimer in the documentation
-      and/or other materials provided with the distribution.
-    * Neither the package name nor the names of its contributors may be
-      used to endorse or promote products derived from this software without
-      specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
@@ -83,55 +106,65 @@ class coinMarketCap:
     def __init__(self):
         click.secho("[*] Getting Coinmarketcap data... ", nl=False)
         coinmarketcap = Market()
-        dogecoin = coinmarketcap.ticker("Dogecoin", limit=3, convert="USD")[0]
+        dogecoin = coinmarketcap.ticker("dogecoin", limit=3, convert="USD")[0]
         self.usdprice = dogecoin["price_usd"]
         self.btcprice = dogecoin["price_btc"]
         self.rank = dogecoin["rank"]
         self.supply = dogecoin["total_supply"]
         click.secho("Done", fg="green")
 
-"""QR code generator: will implement this in the next version"""
-def generateQR():
-    click.secho("[Much Error!] ", fg="red", nl=False)
-    click.echo("I haven't finished this yet ¯\_(ツ)_/¯")
+def generateQR(data):
+        qrcode = pyqrcode.create(data)
+        qrcode.svg("QRCode.svg", scale=8)
+        click.secho("QRCode created as ", nl=False)
+        click.secho("QRCode.svg", blink=True)
 
 """ASCII art and text on startup"""
 def greeting():
-    click.clear()    
-    click.secho(graphic, fg=color)
-    click.echo("MuchToolkit 0.3 Beta by Dylan Hamer\n")
-    click.secho("Donations Welcome:  ", nl=False)
+    click.clear()
+    click.secho(graphic, fg=color, bold=True)
+    click.echo("MuchToolkit 0.4 Beta by Dylan Hamer and Felix Zactor\n")
+    click.secho("Donations Welcome: ")
+    click.secho("Dylan Hamer:  ", nl=False)
     click.secho("DFUjFKtfRKCJGoo62jzzS6tUZnyTqxMHEV", fg="green")
+    click.secho("Felix Zactor: ", nl=False)
+    click.secho("DJZjvKAjT838eLo4jTtuCLWm63yLx2Z3x2", fg="green")
     click.secho("Socks for the homeless: ", nl=False)
     click.secho("9vnaTWu71XWimFCW3hctSxryQgYg7rRZ7y", fg="blue")
+    click.secho("Ðogecoin Reddit: ", nl=False)
+    click.secho("https://reddit.com/r/dogecoin", fg="yellow")
+    if addresses[0] == 0:
+        click.secho("Please add your address(es) to this program!", fg="red", bold=True, blink=True)
+        valid = False
     click.echo()
 
 """Command menu"""
 def menu(coinmarketcap):
     click.echo("Type a command or \'help\' for more information")
     while True:
-        click.secho(">>> ", fg=color, nl=False) 
+        click.secho(">>> ", fg=color, nl=False, blink=True) 
         command=input()
         actualCommand = command
         command = command.lower()
         if command == "help":
             click.echo(help)
         elif command == "version":
-            click.secho("MuchToolkit 0.1", fg="green")
+            click.secho("MuchToolkit 0.4", fg="green")
         elif command == "clear":
             click.clear()
             greeting()
-        elif command == "genqr":
-            generateQR()
+        elif command[0:5] == "genqr":
+            data = command[6:len(command)]
+            generateQR(data)
         elif command == "blockchain":
-            click.launch("http://www.dogechain.info")
+            click.launch("https://www.dogechain.info")
         elif "address" in command:
             actualCommand = actualCommand.split(" ")
             if len(actualCommand) == 1:
-                address = input("Please enter a valid Dogecoin address: ")
+                address = input("Please enter a valid Ðogecoin address: ")
             else:
                 address = actualCommand[1]
-            click.launch("http://www.dogechain.info/address/"+address)
+            click.launch("https://www.dogechain.info/address/"+address)
         elif command == "usdprice":
             click.echo("Price in USD is: "+click.style("$"+coinmarketcap.usdprice,fg="green"))
         elif command == "btcprice":
@@ -144,13 +177,34 @@ def menu(coinmarketcap):
             coinmarketcap = coinMarketCap()
         elif command == "licenses":
             click.echo(licenses)
+        elif command == "reddit":
+            click.launch("https://www.reddit.com/r/dogecoin")
+        elif command == "balance":
+            if valid:
+                click.echo("You have: "+click.style("Ð"+str(balance), fg="green"))
+            elif valid == False:
+                click.secho("Please add your address(es) to this program!", fg="red", bold=True, blink=True)
+        elif command[0:5] == "value":
+            command = command[6:len(command)]
+            if valid == False:
+                click.secho("Please add your address(es) to this program!", fg="red", bold=True, blink=True)
+            elif valid:
+                if command == "btc":
+                    click.echo("You have "+click.style("BTC "+str(float(coinmarketcap.btcprice) * float(balance)))+" in Ðogecoin!")
+                elif command == "usd":
+                    click.echo("You have "+click.style("$"+str(float(coinmarketcap.usdprice) * float(balance)))+" in Ðogecoin!")
+                elif command == "life":
+                    click.secho("[such error] You don't have one!", fg="red", blink=True)
+                else:
+                    click.secho("[such error] Coin not supported!", fg="red", blink=True)
         elif command == "exit":
+            click.clear()
             click.secho("Very exit!", fg="green")
             exit(0)
         elif command == "":
             pass    
         else:
-            click.secho("[Much Error!] Command not found!", fg="red")
+            click.secho("[such error] Command not found!", fg="red", blink=True)
 
 
 def main():  
