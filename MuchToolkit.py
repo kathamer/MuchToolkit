@@ -3,16 +3,35 @@
 
 """
 MuchToolkit 0.4 Beta
-Dogecoin Toolkit
+Ðogecoin Toolkit
 Dylan Hamer 2017
 Felix Zactor 2017
 """
+
+addresses = [0] #Replace the zero and put the addresses in quotes. Make it look like this:
+# addresses = ["DFUjFKtfRKCJGoo62jzzS6tUZnyTqxMHEV", "DJZjvKAjT838eLo4jTtuCLWm63yLx2Z3x2", "9vnaTWu71XWimFCW3hctSxryQgYg7rRZ7y"]
+valid = True
+
 
 import click                      # Make beautiful interfaces
 import muchascii                  # ASCII art
 import random                     # Random choices
 from coinmarketcap import Market  # Get market info
 import pyqrcode                   # Make QR Codes
+import requests                   # For the address script
+import json                       # For the address script
+
+# I would like to thank peoplma for this function
+def doge():
+    balance = []
+    for i in addresses:
+        get_address_info = requests.get('https://api.blockcypher.com/v1/doge/main/addrs/'+i+'/full?limit=99999')
+        address_info = get_address_info.text
+        j_address_info = json.loads(address_info)
+        balance.append(j_address_info['balance'])
+        return sum(balance)/100000000
+if addresses[0] != 0:
+    balance = doge()
 
 """Choose an ASCII art graphic and a color"""
 graphic  = muchascii.get(random.choice(["moon", "rocket", "doge"]))
@@ -33,7 +52,9 @@ btcprice          | Get price in BTC
 rank              | Get rank
 supply            | Get total supply
 refresh           | Refresh Coinmarketcap data
-reddit            | Open the offical Dogecoin reddit\n"""
+reddit            | Open the offical Ðogecoin reddit
+value [btc or usd]| Gives you the value of your doges in the currency on your choice
+balance           | Shows the overall balance of all the addresses added\n"""
 
 """Open source licenses"""
 licenses="""\nOpen source licenses:
@@ -85,14 +106,13 @@ class coinMarketCap:
     def __init__(self):
         click.secho("[*] Getting Coinmarketcap data... ", nl=False)
         coinmarketcap = Market()
-        dogecoin = coinmarketcap.ticker("Dogecoin", limit=3, convert="USD")[0]
+        dogecoin = coinmarketcap.ticker("dogecoin", limit=3, convert="USD")[0]
         self.usdprice = dogecoin["price_usd"]
         self.btcprice = dogecoin["price_btc"]
         self.rank = dogecoin["rank"]
         self.supply = dogecoin["total_supply"]
         click.secho("Done", fg="green")
 
-"""QR code generator: will implement this in the next version"""
 def generateQR(data):
         qrcode = pyqrcode.create(data)
         qrcode.svg("QRCode.svg", scale=8)
@@ -111,8 +131,11 @@ def greeting():
     click.secho("DJZjvKAjT838eLo4jTtuCLWm63yLx2Z3x2", fg="green")
     click.secho("Socks for the homeless: ", nl=False)
     click.secho("9vnaTWu71XWimFCW3hctSxryQgYg7rRZ7y", fg="blue")
-    click.secho("Dogecoin Reddit:")
+    click.secho("Ðogecoin Reddit: ", nl=False)
     click.secho("https://reddit.com/r/dogecoin", fg="yellow")
+    if addresses[0] == 0:
+        click.secho("Please add your address(es) to this program!", fg="red", bold=True, blink=True)
+        valid = False
     click.echo()
 
 """Command menu"""
@@ -138,7 +161,7 @@ def menu(coinmarketcap):
         elif "address" in command:
             actualCommand = actualCommand.split(" ")
             if len(actualCommand) == 1:
-                address = input("Please enter a valid Dogecoin address: ")
+                address = input("Please enter a valid Ðogecoin address: ")
             else:
                 address = actualCommand[1]
             click.launch("https://www.dogechain.info/address/"+address)
@@ -156,6 +179,24 @@ def menu(coinmarketcap):
             click.echo(licenses)
         elif command == "reddit":
             click.launch("https://www.reddit.com/r/dogecoin")
+        elif command == "balance":
+            if valid:
+                click.echo("You have: "+click.style("Ð"+str(balance), fg="green"))
+            elif valid == False:
+                click.secho("Please add your address(es) to this program!", fg="red", bold=True, blink=True)
+        elif command[0:5] == "value":
+            command = command[6:len(command)]
+            if valid == False:
+                click.secho("Please add your address(es) to this program!", fg="red", bold=True, blink=True)
+            elif valid:
+                if command == "btc":
+                    click.echo("You have "+click.style("BTC "+str(float(coinmarketcap.btcprice) * float(balance)))+" in Ðogecoin!")
+                elif command == "usd":
+                    click.echo("You have "+click.style("$"+str(float(coinmarketcap.usdprice) * float(balance)))+" in Ðogecoin!")
+                elif command == "life":
+                    click.secho("[such error] You don't have one!", fg="red", blink=True)
+                else:
+                    click.secho("[such error] Coin not supported!", fg="red", blink=True)
         elif command == "exit":
             click.clear()
             click.secho("Very exit!", fg="green")
@@ -163,7 +204,7 @@ def menu(coinmarketcap):
         elif command == "":
             pass    
         else:
-            click.secho("[Much Error!] Command not found!", fg="red", blink=True)
+            click.secho("[such error] Command not found!", fg="red", blink=True)
 
 
 def main():  
