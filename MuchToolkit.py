@@ -29,7 +29,7 @@ def balance(addresses):
 """Tells the program if you can use balance and value commands"""
 valid = False
 """Modify this line to change your prompt"""
-promptType = "[>] "
+promptType = ">>> "
 
 """Choose an ASCII art graphic and a color"""
 graphic  = muchascii.randomChoice()
