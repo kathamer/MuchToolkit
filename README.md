@@ -12,46 +12,41 @@ MuchToolkit is an application full of useful utilities for working with Dogecoin
 ### Installing
 [!!] MuchToolkit only works with Linux! (For now)
 
-First, you need to install Click, Coinmarketcap, and Pyqrcode.
+First, you need to install Click and Coinmarketcap.
 Type `pip3 install click`
 
 Once that has finished, type `pip3 install coinmarketcap`
 
-After that, type `pip3 install pyqrcode`
+You also need qrcode for Python so type `pip3 install qrcode`
 
-Then type `git clone https://github.com/DylanHamer/MuchToolkit` or download the ZIP at https://github.com/DylanHamer/MuchToolkit
+Then, type `git clone https://github.com/DylanHamer/MuchToolkit`
 
-Then just type `python3 MuchToolkit.py` to run MuchToolkit
+After that, just type `./MuchToolkit.py` to run MuchToolkit
 
 ### List of commands
-licenses          | Show open source licenses
+licenses            | Show open source licenses
 
-help              | Show this message
+help                | Show this message
 
-version           | Get current version
+version             | Get current version
 
-exit              | Exit the application
+exit                | Exit the application
 
-genqr             | Generate a QR code
+genqr               | Generate a QR code
 
-blockchain        | Open dogechain.info
+blockchain          | Open dogechain.info
 
-address           | Explore an address
+address             | Explore an address
 
-usdprice          | Get price in USD
+usdprice            | Get price in USD
 
-btcprice          | Get price in BTC
+btcprice            | Get price in BTC
 
-rank              | Get rank
+rank                | Get rank
+ 
+supply              | Get total supply
 
-supply            | Get total supply
+refresh             | Refresh Coinmarketcap data
 
-refresh           | Refresh Coinmarketcap data
+reddit (beg/market) | Open Reddit to a the Dogecoin subreddit
 
-reddit            | Opens the subreddit
-
-balance           | Get the balance of your doges
-
-value             | Get the value of your doges in the currecny of your choice
-
-In the source code, there is a place to add in your dogecoin address(es).
