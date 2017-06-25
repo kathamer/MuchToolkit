@@ -9,10 +9,21 @@ Dylan Hamer 2017
 """
 
 import click  # Needed for coloured text
+import random # Needed for random choice
+import os     # Needed for getting files
+
+def randomChoice():
+    files = []
+
+    for dirname, dirnames, filenames in os.walk('ASCII'):
+        for filename in filenames:
+            files.append(filename)
+    graphic = random.choice(files)
+    return get("ASCII/"+graphic)
 
 def get(asciiFile):
     try:
-        with open("ASCII/"+asciiFile+".txt") as file:
+        with open(asciiFile) as file:
             ascii = file.read()
             file.close()
     except:
