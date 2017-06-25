@@ -2,23 +2,43 @@
 # -*- coding: utf-8 -*-
 
 """
-MuchToolkit 0.4 Beta
+MuchToolkit 0.5 Beta
 Dogecoin Toolkit
 Dylan Hamer 2017
 """
-
+doge = [0] #Replace the zero and put the addresses in quotes. Make it look like this:
+# addresses = ["DFUjFKtfRKCJGoo62jzzS6tUZnyTqxMHEV", "DJZjvKAjT838eLo4jTtuCLWm63yLx2Z3x2", "9vnaTWu71XWimFCW3hctSxryQgYg7rRZ7y"]
 import click                      # Make beautiful interfaces
 import muchascii                  # ASCII art
 import qrcode                     # Make QR Codes
 import random                     # Random choices
 from coinmarketcap import Market  # Get market info
+import requests                   # For the address script
+import json                       # For the address script
 
+# I would like to thank /u/peoplma for this function
+def balance(addresses):
+    balance = []
+    for i in addresses:
+        get_address_info = requests.get('https://api.blockcypher.com/v1/doge/main/addrs/'+i+'/full?limit=99999')
+        address_info = get_address_info.text
+        j_address_info = json.loads(address_info)
+        balance.append(j_address_info['balance'])
+        return sum(balance)/100000000
+
+"""Tells the program if you can use balance and value commands"""
+valid = False
 """Modify this line to change your prompt"""
-promptType = ">>> "
+promptType = "[>] "
 
 """Choose an ASCII art graphic and a color"""
 graphic  = muchascii.randomChoice()
 color = random.choice(["red", "green", "yellow", "blue"])
+
+"""Gets your balance"""
+if doge[0] != 0:
+    dogeBalance = balance(doge)
+    valid = True
 
 """Help text"""
 help="""\nList of commands:
@@ -113,7 +133,7 @@ def generateQR():
 def greeting():
     click.clear()
     click.secho(graphic, fg=color)
-    click.echo("MuchToolKit Release 4 by Dylan Hamer\n")
+    click.echo("MuchToolKit Release 5 by Dylan Hamer\n")
     click.secho("Donations Welcome:  ", nl=False)
     click.secho("DFUjFKtfRKCJGoo62jzzS6tUZnyTqxMHEV", fg="green")
     click.secho("Socks for the homeless: ", nl=False)
@@ -132,7 +152,7 @@ def commandHandler(command, coinmarketcap):
     if command == "help":
         click.echo(help)
     elif command == "version":
-        click.secho("MuchToolKit Release 4", fg="green")
+        click.secho("MuchToolKit Release 5", fg="green")
     elif command == "clear":
         click.clear()
         greeting()
@@ -164,6 +184,24 @@ def commandHandler(command, coinmarketcap):
     elif command == "reddit beg":
         click.secho("[Much Wow!] Opened /r/dogecoinbeg in your browser", fg="green")
         click.launch("http://www.reddit.com/r/dogecoinbeg")
+    elif command == "balance":
+            if valid:
+                click.echo("You have: "+click.style("Ð"+str(balance), fg="green"))
+            elif valid == False:
+                click.secho("Please add your address(es) to this program!", fg="red", bold=True, blink=True)
+    elif command[0:5] == "value":
+            command = command[6:len(command)]
+            if valid == False:
+                click.secho("Please add your address(es) to this program!", fg="red", bold=True, blink=True)
+            elif valid:
+                if command == "btc":
+                    click.echo("You have "+click.style("BTC "+str(float(coinmarketcap.btcprice) * float(balance)))+" in Ðogecoin!")
+                elif command == "usd":
+                    click.echo("You have "+click.style("$"+str(float(coinmarketcap.usdprice) * float(balance)))+" in Ðogecoin!")
+                elif command == "life":
+                    click.secho("[such error] You don't have one!", fg="red", blink=True)
+                else:
+                    click.secho("[such error] Coin not supported!", fg="red", blink=True)
     elif command == "exit":
         click.secho("To the moon!", fg="green")
         exit(0)
