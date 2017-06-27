@@ -19,6 +19,8 @@ Once that has finished, type `pip3 install coinmarketcap`
 
 You also need qrcode for Python so type `pip3 install qrcode`
 
+Then, you'll need pyqrcode for Python so type `pip3 install pyqrcode`
+
 Then, type `git clone https://github.com/DylanHamer/MuchToolkit`
 
 After that, just type `./MuchToolkit.py` to run MuchToolkit
@@ -32,7 +34,7 @@ version             | Get current version
 
 exit                | Exit the application
 
-genqr               | Generate a QR code
+genqr (svg/jpg)     | Generate a QR code
 
 blockchain          | Open dogechain.info
 

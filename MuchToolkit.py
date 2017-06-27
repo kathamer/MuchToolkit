@@ -10,7 +10,8 @@ doge = [0] #Replace the zero and put the addresses in quotes. Make it look like 
 # addresses = ["DFUjFKtfRKCJGoo62jzzS6tUZnyTqxMHEV", "DJZjvKAjT838eLo4jTtuCLWm63yLx2Z3x2", "9vnaTWu71XWimFCW3hctSxryQgYg7rRZ7y"]
 import click                      # Make beautiful interfaces
 import muchascii                  # ASCII art
-import qrcode                     # Make QR Codes
+import qrcode                     # Make QR Codes in JPG format
+import pyqrcode                   # Make QR Codes in SVG format
 import random                     # Random choices
 from coinmarketcap import Market  # Get market info
 import requests                   # For the address script
@@ -127,14 +128,21 @@ class coinMarketCap:
         click.secho("Done", fg="green")
 
 """QR code generator: will implement this in the next version"""
-def generateQR():
+def generateQR(codeFormat):
     address = input("Please enter your address: ")
-    img = qrcode.make(address)
-    click.secho("Saved to: QRCodes/"+address+".jpg", fg="green")
-    try:
-        img.save("QRCodes/"+address+".jpg")
-    except:
-        click.secho("[Much Error!] Failed to save file", fg="red")
+    if codeFormat == "jpg" or "raster" or True:
+        img = qrcode.make(address)
+        click.secho("Saved to: QRCodes/"+address+".jpg", fg="green")
+        try:
+            img.save("QRCodes/"+address+".jpg")
+        except:
+            click.secho("[Much Error!] Failed to save file", fg="red")
+    elif codeFormat == "svg" or "vector"
+        code = pyqrcode.create(address)
+        code.svg('QRCodes/'+address+".svg", scale=8)
+        click.secho("Saved to: QRCodes/"+address+".svg", fg="green")
+    
+    
 
 """ASCII art and text on startup"""
 def greeting():
@@ -163,30 +171,32 @@ def commandHandler(command, coinmarketcap):
     elif command == "clear":
         click.clear()
         greeting()
-    elif command == "genqr":
-        generateQR()
+    elif command[0:5] == "genqr":
+        if command == 5:
+            generateQR(True)
+        else:
+            generateQR(command[6:len(command)])
     elif command == "blockchain":
         click.launch("http://www.dogechain.info")
     elif command == "address":
         address = input("Please enter a valid Dogecoin address: ")
         click.launch("http://www.dogechain.info/address/"+address)
     elif command[0:5] == "price":
-		command = command[6:len(command)]
-		if command == "btc" or "bitcoin":
-		elif command == "usd" or "dollar":
-			click.echo("Price in USD is: "+click.style("$"+coinmarketcap.usdprice,fg="green"))
-		elif command == "gbp" or "pound":
-			click.echo("Price in USD is: "+click.style("£"+coinmarketcap.gbpprice,fg="green"))
-		elif command == "eur" or "euro":
-			click.echo("Price in USD is: "+click.style("€"+coinmarketcap.eurprice,fg="green"))
-		elif command == "aud" or "aussie":
-			click.echo("Price in USD is: "+click.style("$"+coinmarketcap.audprice,fg="green"))
-		elif command == "cad":
-			click.echo("Price in USD is: "+click.style("$"+coinmarketcap.cadprice,fg="green"))
-    elif command == "usdprice":
-        click.echo("Price in USD is: "+click.style("$"+coinmarketcap.usdprice,fg="green"))
-    elif command == "btcprice":
-        click.echo("Price in BTC is: "+click.style("BTC "+coinmarketcap.btcprice, fg="green"))
+        command = command[6:len(command)]
+        if command == "btc" or "bitcoin":
+            click.echo("Price in BTC is: "+click.style("BTC "+coinmarketcap.btcprice,fg="green"))
+        elif command == "usd" or "dollar":
+            click.echo("Price in USD is: "+click.style("$"+coinmarketcap.usdprice,fg="green"))
+        elif command == "gbp" or "pound":
+            click.echo("Price in USD is: "+click.style("£"+coinmarketcap.gbpprice,fg="green"))
+        elif command == "eur" or "euro":
+            click.echo("Price in USD is: "+click.style("€"+coinmarketcap.eurprice,fg="green"))
+        elif command == "aud" or "aussie":
+            click.echo("Price in USD is: "+click.style("$"+coinmarketcap.audprice,fg="green"))
+        elif command == "cad":
+            click.echo("Price in USD is: "+click.style("$"+coinmarketcap.cadprice,fg="green"))
+        else:
+            click.secho("[such error] Currency not supported!" fg="red")
     elif command == "rank":
         click.echo("Cryptocurrency rank is: "+click.style("#"+coinmarketcap.rank, fg="green")+" according to Coinmarketcap")
     elif command == "supply":
@@ -223,7 +233,7 @@ def commandHandler(command, coinmarketcap):
                 else:
                     click.secho("[such error] Coin not supported!", fg="red", blink=True)
     elif command == "exit":
-		click.clear()
+        click.clear()
         click.secho("To the moon!", fg="green")
         exit(0)
     elif command == "":
