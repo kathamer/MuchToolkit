@@ -29,7 +29,7 @@ def balance(addresses):
 """Tells the program if you can use balance and value commands"""
 valid = False
 """Modify this line to change your prompt"""
-promptType = ">>> "
+promptType = "[>] "
 
 """Choose an ASCII art graphic and a color"""
 graphic  = muchascii.randomChoice()
@@ -50,8 +50,7 @@ exit               | Exit the application
 genqr              | Generate a QR code
 blockchain         | Open dogechain.info
 address <address>  | Explore an address
-usdprice           | Get price in USD
-btcprice           | Get price in BTC
+price   <currency> | Price of doge in the curreny of your choice
 rank               | Get rank
 supply             | Get total supply
 refresh            | Refresh Coinmarketcap data
@@ -115,6 +114,14 @@ class coinMarketCap:
         dogecoin = coinmarketcap.ticker("Dogecoin", limit=3, convert="USD")[0]
         self.usdprice = dogecoin["price_usd"]
         self.btcprice = dogecoin["price_btc"]
+        dogecoin = coinmarketcap.ticker("Dogecoin", limit=3, convert="EUR")[0]
+        self.usdprice = dogecoin["price_eur"]
+        dogecoin = coinmarketcap.ticker("Dogecoin", limit=3, convert="GBP")[0]
+        self.usdprice = dogecoin["price_gbp"]
+        dogecoin = coinmarketcap.ticker("Dogecoin", limit=3, convert="AUD")[0]
+        self.cadprice = dogecoin["price_aud"]
+        dogecoin = coinmarketcap.ticker("Dogecoin", limit=3, convert="CAD")[0]
+        self.cadprice = dogecoin["price_cad"]
         self.rank = dogecoin["rank"]
         self.supply = dogecoin["total_supply"]
         click.secho("Done", fg="green")
@@ -163,6 +170,19 @@ def commandHandler(command, coinmarketcap):
     elif command == "address":
         address = input("Please enter a valid Dogecoin address: ")
         click.launch("http://www.dogechain.info/address/"+address)
+    elif command[0:5] == "price":
+		command = command[6:len(command)]
+		if command == "btc" or "bitcoin":
+		elif command == "usd" or "dollar":
+			click.echo("Price in USD is: "+click.style("$"+coinmarketcap.usdprice,fg="green"))
+		elif command == "gbp" or "pound":
+			click.echo("Price in USD is: "+click.style("£"+coinmarketcap.gbpprice,fg="green"))
+		elif command == "eur" or "euro":
+			click.echo("Price in USD is: "+click.style("€"+coinmarketcap.eurprice,fg="green"))
+		elif command == "aud" or "aussie":
+			click.echo("Price in USD is: "+click.style("$"+coinmarketcap.audprice,fg="green"))
+		elif command == "cad":
+			click.echo("Price in USD is: "+click.style("$"+coinmarketcap.cadprice,fg="green"))
     elif command == "usdprice":
         click.echo("Price in USD is: "+click.style("$"+coinmarketcap.usdprice,fg="green"))
     elif command == "btcprice":
@@ -203,6 +223,7 @@ def commandHandler(command, coinmarketcap):
                 else:
                     click.secho("[such error] Coin not supported!", fg="red", blink=True)
     elif command == "exit":
+		click.clear()
         click.secho("To the moon!", fg="green")
         exit(0)
     elif command == "":

@@ -38,9 +38,7 @@ blockchain          | Open dogechain.info
 
 address             | Explore an address
 
-usdprice            | Get price in USD
-
-btcprice            | Get price in BTC
+price               | Price of doge in the currency of your choice
 
 rank                | Get rank
  
