@@ -48,5 +48,10 @@ supply              | Get total supply
 
 refresh             | Refresh Coinmarketcap data
 
+projects            | Get a list of community projects
+
 reddit (beg/market) | Open Reddit to a the Dogecoin subreddit
 
+
+
+To the moon!
