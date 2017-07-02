@@ -180,7 +180,7 @@ def commandHandler(command, coinmarketcap):
     elif command == "family":
         click.echo(project["family"])
     elif command == "socks":
-        click.echo(project["socks")
+        click.echo(project["socks"])
     elif command == "reddit":
         click.secho("[Much Wow!] Opened /r/dogecoin in your browser", fg="green")
         click.launch("http://www.reddit.com/r/dogecoin")
