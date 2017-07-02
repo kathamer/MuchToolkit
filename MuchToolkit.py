@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 """
-MuchToolkit 0.4 Beta
-Dogecoin Toolkit
+MuchToolkit 0.5 Beta
+A simple wrapper for a collection of Dogecoin tools
 Dylan Hamer 2017
 """
 
@@ -20,6 +20,21 @@ promptType = ">>> "
 graphic  = muchascii.randomChoice()
 color = random.choice(["red", "green", "yellow", "blue"])
 
+"""Projects"""
+projects="""\n Dogecoin community projects:
+
+- Dogecoin Socks for the Homeless
+Dogecoin socks for the homeless aims to lower the amount
+of foot disease in the homless community by buying socks
+for the homeless with Dogecoin. A single pair of socks
+costs just 68 cents. They have already received a grand
+total of Ð1,111,187.
+
+Reddit Post: https://www.reddit.com/r/dogecoin/comments/5b1lfw/dogecoin_socks_it_to_the_homeless/
+
+Have a project that you'd like featured? Send me an email at dylanhamer13@gmail.com.
+"""
+
 """Help text"""
 help="""\nList of commands:
 ______________________________________________
@@ -35,6 +50,7 @@ btcprice           | Get price in BTC
 rank               | Get rank
 supply             | Get total supply
 refresh            | Refresh Coinmarketcap data
+projects           | View a list of community projects
 reddit (beg/market)| Open Reddit to a the Dogecoin subreddit\n"""
 
 """Open source licenses"""
@@ -116,10 +132,7 @@ def greeting():
     click.echo("MuchToolKit Release 4 by Dylan Hamer\n")
     click.secho("Donations Welcome:  ", nl=False)
     click.secho("DFUjFKtfRKCJGoo62jzzS6tUZnyTqxMHEV", fg="green")
-    click.secho("Socks for the homeless: ", nl=False)
-    click.secho("9vnaTWu71XWimFCW3hctSxryQgYg7rRZ7y", fg="blue")
-    click.secho("Dogecoin QT Developers: ", nl=False)
-    click.secho("9x9zSN9vx3Kf9B4ofwzEfWgiqxwBieCNEb", fg="yellow")
+    click.echo("Type \'projects\' to see a list of community projects'")
     click.echo()
 
 def prompt():
@@ -132,7 +145,7 @@ def commandHandler(command, coinmarketcap):
     if command == "help":
         click.echo(help)
     elif command == "version":
-        click.secho("MuchToolKit Release 4", fg="green")
+        click.secho("MuchToolKit Release 5", fg="green")
     elif command == "clear":
         click.clear()
         greeting()
@@ -155,6 +168,8 @@ def commandHandler(command, coinmarketcap):
         coinmarketcap = coinMarketCap()
     elif command == "licenses":
         click.echo(licenses)
+    elif commaned == "projects":
+        click.echo(projects)
     elif command == "reddit":
         click.secho("[Much Wow!] Opened /r/dogecoin in your browser", fg="green")
         click.launch("http://www.reddit.com/r/dogecoin")
