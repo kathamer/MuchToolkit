@@ -168,7 +168,7 @@ def commandHandler(command, coinmarketcap):
         coinmarketcap = coinMarketCap()
     elif command == "licenses":
         click.echo(licenses)
-    elif commaned == "projects":
+    elif command == "projects":
         click.echo(projects)
     elif command == "reddit":
         click.secho("[Much Wow!] Opened /r/dogecoin in your browser", fg="green")
