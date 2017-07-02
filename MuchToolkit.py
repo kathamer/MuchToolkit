@@ -129,7 +129,7 @@ def generateQR():
 def greeting():
     click.clear()
     click.secho(graphic, fg=color)
-    click.echo("MuchToolKit Release 4 by Dylan Hamer\n")
+    click.echo("MuchToolKit Release 5 by Dylan Hamer\n")
     click.secho("Donations Welcome:  ", nl=False)
     click.secho("DFUjFKtfRKCJGoo62jzzS6tUZnyTqxMHEV", fg="green")
     click.echo("Type \'projects\' to see a list of community projects'")
@@ -190,7 +190,7 @@ def commandHandler(command, coinmarketcap):
 def main():
     coinmarketcap = coinMarketCap()
     greeting()
-    click.secho("Welcome to MuchToolKit! (Release 4)")
+    click.secho("Welcome to MuchToolKit! (Release 5)")
     click.secho("Type help to see help information or license to see open source licenses")
     while True:
         commandHandler(prompt(), coinmarketcap)
