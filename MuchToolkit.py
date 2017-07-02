@@ -24,16 +24,23 @@ color = random.choice(["red", "green", "yellow", "blue"])
 projects="""\n Dogecoin community projects:
 
 - Dogecoin Socks for the Homeless
-Dogecoin socks for the homeless aims to lower the amount
+Type \'socks\' for more information.
+
+- Doge 4 Family Home
+Type \'family\' for more information.
+
+
+Have a project that you'd like featured? Send me an email at dylanhamer13@gmail.com.
+"""
+
+project={"socks":"""Dogecoin socks for the homeless aims to lower the amount
 of foot disease in the homless community by buying socks
 for the homeless with Dogecoin. A single pair of socks
 costs just 68 cents. They have already received a grand
 total of Ð1,111,187.
 
 Reddit Post: https://www.reddit.com/r/dogecoin/comments/5b1lfw/dogecoin_socks_it_to_the_homeless/
-
-Have a project that you'd like featured? Send me an email at dylanhamer13@gmail.com.
-"""
+""", "family":"""Reddit post: https://www.reddit.com/r/dogecoin/comments/6es4op/start_up_a_fundraiser_for_families_dealing_with_a/"""}
 
 """Help text"""
 help="""\nList of commands:
@@ -170,6 +177,10 @@ def commandHandler(command, coinmarketcap):
         click.echo(licenses)
     elif command == "projects":
         click.echo(projects)
+    elif command == "family":
+        click.echo(project["family"])
+    elif command == "socks":
+        click.echo(project["socks")
     elif command == "reddit":
         click.secho("[Much Wow!] Opened /r/dogecoin in your browser", fg="green")
         click.launch("http://www.reddit.com/r/dogecoin")
