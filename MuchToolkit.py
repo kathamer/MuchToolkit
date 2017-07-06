@@ -19,8 +19,8 @@ color = random.choice(["red", "green", "yellow", "blue"])
 
 """List of projects"""
 class projects:
-    list = """Dogecoin Socks for the homeless: Type \`project-socks\` to see more.
-Doge 4 Family House: Type \`project-family\` to see more."""
+    list = """Dogecoin Socks for the homeless: Type \'project-socks\' to see more.
+Doge 4 Family House: Type \'project-family\' to see more."""
     family = {"url":"https://www.reddit.com/r/dogecoin/comments/6es4op/start_up_a_fundraiser_for_families_dealing_with_a/"}
     socks = {"url":"https://www.reddit.com/r/dogecoin/comments/5b1lfw/dogecoin_socks_it_to_the_homeless/"}
 
