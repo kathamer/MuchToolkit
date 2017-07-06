@@ -125,7 +125,7 @@ def greeting():
     click.echo()
 
 def prompt():
-    click.secho(promptType, fg=color, nl=False)
+    click.secho(">>>", fg=color, nl=False)
     command = input()
     return command.lower()
 
