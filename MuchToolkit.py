@@ -13,34 +13,16 @@ import qrcode                     # Make QR Codes
 import random                     # Random choices
 from coinmarketcap import Market  # Get market info
 
-"""Modify this line to change your prompt"""
-promptType = ">>> "
-
 """Choose an ASCII art graphic and a color"""
 graphic  = muchascii.randomChoice()
 color = random.choice(["red", "green", "yellow", "blue"])
 
-"""Projects"""
-projects="""\n Dogecoin community projects:
-
-- Dogecoin Socks for the Homeless
-Type \'socks\' for more information.
-
-- Doge 4 Family Home
-Type \'family\' for more information.
-
-
-Have a project that you'd like featured? Send me an email at dylanhamer13@gmail.com.
-"""
-
-project={"socks":"""Dogecoin socks for the homeless aims to lower the amount
-of foot disease in the homless community by buying socks
-for the homeless with Dogecoin. A single pair of socks
-costs just 68 cents. They have already received a grand
-total of Ð1,111,187.
-
-Reddit Post: https://www.reddit.com/r/dogecoin/comments/5b1lfw/dogecoin_socks_it_to_the_homeless/
-""", "family":"""Reddit post: https://www.reddit.com/r/dogecoin/comments/6es4op/start_up_a_fundraiser_for_families_dealing_with_a/"""}
+"""List of projects"""
+class projects:
+    list = """Dogecoin Socks for the homeless: Type \`project-socks\` to see more.
+    Doge 4 Family House: Type \`project-family\` to see more."""
+    family = {"url":"https://www.reddit.com/r/dogecoin/comments/6es4op/start_up_a_fundraiser_for_families_dealing_with_a/"}
+    socks = {"url":"https://www.reddit.com/r/dogecoin/comments/5b1lfw/dogecoin_socks_it_to_the_homeless/"}
 
 """Help text"""
 help="""\nList of commands:
@@ -122,7 +104,7 @@ class coinMarketCap:
         self.supply = dogecoin["total_supply"]
         click.secho("Done", fg="green")
 
-"""QR code generator: will implement this in the next version"""
+"""QR code generator"""
 def generateQR():
     address = input("Please enter your address: ")
     img = qrcode.make(address)
@@ -176,11 +158,13 @@ def commandHandler(command, coinmarketcap):
     elif command == "licenses":
         click.echo(licenses)
     elif command == "projects":
-        click.echo(projects)
-    elif command == "family":
-        click.echo(project["family"])
-    elif command == "socks":
-        click.echo(project["socks"])
+        click.echo(projects.list)
+    elif command == "project-family":
+        click.secho("[Much Wow!] Opened Doge 4 Family House in your browser", fg="green")
+        click.launch(projects.family["url"])
+    elif command == "project-socks":
+        click.secho("[Much Wow!] Opened Dogecoin Socks for the Homeless in your browser", fg="green")
+        click.launch(projects.socks["url"])
     elif command == "reddit":
         click.secho("[Much Wow!] Opened /r/dogecoin in your browser", fg="green")
         click.launch("http://www.reddit.com/r/dogecoin")
