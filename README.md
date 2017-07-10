@@ -22,20 +22,35 @@ After that, just type `./MuchToolkit.py` to run MuchToolkit
 
 ### List of commands
 licenses           | Show open source licenses
+
 help               | Show this message
+
 version            | Get current version
+
 exit               | Exit the application
+
 genqr              | Generate a QR code
+
 blockchain         | Open dogechain.info
+
 address <address>  | Explore an address
+
 price   <currency> | Price of doge in the curreny of your choice
+
 rank               | Get rank
+
 supply             | Get total supply
+
 refresh            | Refresh Coinmarketcap data
+
 reddit (beg/market)| Open Reddit to a the Dogecoin subreddit
+
 value  <currency>  | See the value of your dogecoins
+
 projects           | View a list of community projects
+
 rainbow <text>     | Displays colored text
+
 donate             | Donation Address to Felix Zactor
 
 
