@@ -180,7 +180,10 @@ def commandHandler(command, coinmarketcap):
     elif command == "":
         pass
     else:
-        click.secho("[Much Error!] Command not found!", fg="red")
+        if command == "clear":
+            pass
+        else:
+            click.secho("[Much Error!] Command not found!", fg="red")
 
 def main():
     coinmarketcap = coinMarketCap()
