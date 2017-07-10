@@ -11,7 +11,7 @@ import muchascii                  # ASCII art
 import qrcode                     # Make QR Codes
 import random                     # Random choices
 from coinmarketcap import Market  # Get market info
-doge = ["0"] #Replace the 0 with your addresses.
+doge = ["0"] #Replace the 0 with your address(es).
 def balance(addresses):
     balance = []
     for i in addresses:
@@ -115,11 +115,19 @@ which is the property of felixphew on GitHub.
 """Coinmarketcap wrapper"""
 class coinMarketCap:
     def __init__(self):
-        click.secho("[*] Getting Coinmarketcap data... ", nl=False)
+        rainbow("[*] Getting Coinmarketcap data... ")
         coinmarketcap = Market()
         dogecoin = coinmarketcap.ticker("Dogecoin", limit=3, convert="USD")[0]
         self.usdprice = dogecoin["price_usd"]
         self.btcprice = dogecoin["price_btc"]
+        dogecoin = coinmarketcap.ticker("Dogecoin", limit=3, convert="EUR")[0]
+        self.usdprice = dogecoin["price_eur"]
+        dogecoin = coinmarketcap.ticker("Dogecoin", limit=3, convert="GBP")[0]
+        self.usdprice = dogecoin["price_gbp"]
+        dogecoin = coinmarketcap.ticker("Dogecoin", limit=3, convert="AUD")[0]
+        self.audprice = dogecoin["price_aud"]
+        dogecoin = coinmarketcap.ticker("Dogecoin", limit=3, convert="CAD")[0]
+        self.cadprice = dogecoin["price_cad"]
         self.rank = dogecoin["rank"]
         self.supply = dogecoin["total_supply"]
         click.secho("Done", fg="green")
@@ -142,11 +150,14 @@ def generateQR(codeFormat):
 """ASCII art and text on startup"""
 def greeting():
     click.clear()
-    click.secho(graphic, fg=color)
+    click.secho(graphic, fg=color, bold=True)
     click.echo("MuchUnofficalToolKit Release 6 by Dylan Hamer amd Felix Zactor\n")
     click.secho("Donations Welcome:  ", nl=False)
-    click.secho("DFUjFKtfRKCJGoo62jzzS6tUZnyTqxMHEV", fg="green")
+    rainbow("DFUjFKtfRKCJGoo62jzzS6tUZnyTqxMHEV")
     click.echo("Type \'projects\' to see a list of community projects'")
+    click.echo()
+    rainbow("Welcome to MuchUnofficalToolKit! (Release 6)")
+    click.secho("Type help to see help information or license to see open source licenses")
     click.echo()
 
 def prompt():
@@ -177,13 +188,13 @@ def commandHandler(command, coinmarketcap):
     elif command == "price usd":
             click.echo("Price in USD is: "+click.style("$"+coinmarketcap.usdprice,fg="green"))
     elif command == "price gbp":
-            click.echo("Price in USD is: "+click.style("£"+coinmarketcap.gbpprice,fg="green"))
+            click.echo("Price in GBP is: "+click.style("£"+coinmarketcap.gbpprice,fg="green"))
     elif command == "price eur":
-            click.echo("Price in USD is: "+click.style("€"+coinmarketcap.eurprice,fg="green"))
+            click.echo("Price in EUR is: "+click.style("€"+coinmarketcap.eurprice,fg="green"))
     elif command == "price aud":
-            click.echo("Price in USD is: "+click.style("$"+coinmarketcap.audprice,fg="green"))
+            click.echo("Price in AUD is: "+click.style("$"+coinmarketcap.audprice,fg="green"))
     elif command == "price cad":
-            click.echo("Price in USD is: "+click.style("$"+coinmarketcap.cadprice,fg="green"))
+            click.echo("Price in CAD is: "+click.style("$"+coinmarketcap.cadprice,fg="green"))
     elif command == "rank":
         click.echo("Cryptocurrency rank is: "+click.style("#"+coinmarketcap.rank, fg="green")+" according to Coinmarketcap")
     elif command == "supply":
@@ -252,8 +263,6 @@ def commandHandler(command, coinmarketcap):
 def main():
     coinmarketcap = coinMarketCap()
     greeting()
-    click.secho("Welcome to MuchUnofficalToolKit! (Release 6)")
-    click.secho("Type help to see help information or license to see open source licenses")
     while True:
         commandHandler(prompt(), coinmarketcap)
 if __name__ == "__main__":
