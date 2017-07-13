@@ -34,8 +34,9 @@ exit               | Exit the application
 genqr              | Generate a QR code
 blockchain         | Open dogechain.info
 address <address>  | Explore an address
-usdprice           | Get price in USD
-btcprice           | Get price in BTC
+usd                | Get price in USD
+gbp                | Get price in GBP
+btc                | Get price in BTC
 rank               | Get rank
 supply             | Get total supply
 refresh            | Refresh Coinmarketcap data
@@ -97,8 +98,9 @@ class coinMarketCap:
     def __init__(self):
         click.secho("[*] Getting Coinmarketcap data... ", nl=False)
         coinmarketcap = Market()
-        dogecoin = coinmarketcap.ticker("Dogecoin", limit=3, convert="USD")[0]
+        dogecoin = coinmarketcap.ticker("Dogecoin", limit=3, convert="GBP")[0]
         self.usdprice = dogecoin["price_usd"]
+        self.gbpprice = dogecoin["price_gbp"]
         self.btcprice = dogecoin["price_btc"]
         self.rank = dogecoin["rank"]
         self.supply = dogecoin["total_supply"]
@@ -145,9 +147,11 @@ def commandHandler(command, coinmarketcap):
     elif command == "address":
         address = input("Please enter a valid Dogecoin address: ")
         click.launch("http://www.dogechain.info/address/"+address)
-    elif command == "usdprice":
+    elif command == "usd":
         click.echo("Price in USD is: "+click.style("$"+coinmarketcap.usdprice,fg="green"))
-    elif command == "btcprice":
+    elif command == "gbp":
+        click.echo("Price in GBP is: "+click.style("£"+coinmarketcap.gbpprice,fg="green"))
+    elif command == "btc":
         click.echo("Price in BTC is: "+click.style("BTC "+coinmarketcap.btcprice, fg="green"))
     elif command == "rank":
         click.echo("Cryptocurrency rank is: "+click.style("#"+coinmarketcap.rank, fg="green")+" according to Coinmarketcap")
