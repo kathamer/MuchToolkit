@@ -37,6 +37,7 @@ address <address>  | Explore an address
 usd                | Get price in USD
 gbp                | Get price in GBP
 btc                | Get price in BTC
+change             | Get change over time in %
 rank               | Get rank
 supply             | Get total supply
 refresh            | Refresh Coinmarketcap data
@@ -102,6 +103,9 @@ class coinMarketCap:
         self.usdprice = dogecoin["price_usd"]
         self.gbpprice = dogecoin["price_gbp"]
         self.btcprice = dogecoin["price_btc"]
+        self.change1 = dogecoin["percent_change_1h"]
+        self.change24 = dogecoin["percent_change_24h"]
+        self.change7 = dogecoin["percent_change_7d"]
         self.rank = dogecoin["rank"]
         self.supply = dogecoin["total_supply"]
         click.secho("Done", fg="green")
@@ -148,11 +152,24 @@ def commandHandler(command, coinmarketcap):
         address = input("Please enter a valid Dogecoin address: ")
         click.launch("http://www.dogechain.info/address/"+address)
     elif command == "usd":
-        click.echo("Price in USD is: "+click.style("$"+coinmarketcap.usdprice,fg="green"))
+        click.echo(click.style("$"+coinmarketcap.usdprice,fg="green"))
     elif command == "gbp":
-        click.echo("Price in GBP is: "+click.style("£"+coinmarketcap.gbpprice,fg="green"))
+        click.echo(click.style("£"+coinmarketcap.gbpprice,fg="green"))
     elif command == "btc":
-        click.echo("Price in BTC is: "+click.style("BTC "+coinmarketcap.btcprice, fg="green"))
+        click.echo(click.style("BTC "+coinmarketcap.btcprice, fg="green"))
+    elif command == "change":
+        if coinmarketcap.change1 > '0':
+            click.echo(click.style("+"+coinmarketcap.change1+"%"" in the last hour", fg="green"))
+        else:
+            click.echo(click.style(coinmarketcap.change1+"%"" in the last hour", fg="red"))
+        if coinmarketcap.change7 > '0':
+            click.echo(click.style("+"+coinmarketcap.change7+"%"" in the last 7 days", fg="green"))
+        else:
+            click.echo(click.style(coinmarketcap.change7+"%"" in the last 7 days", fg="red"))
+        if coinmarketcap.change24 > '0':
+            click.echo(click.style("+"+coinmarketcap.change24+"%"" in the last 24 hours", fg="green"))
+        else:
+            click.echo(click.style(coinmarketcap.change24+"%"" in the last 24 hours", fg="red"))
     elif command == "rank":
         click.echo("Cryptocurrency rank is: "+click.style("#"+coinmarketcap.rank, fg="green")+" according to Coinmarketcap")
     elif command == "supply":
